@@ -1,3 +1,5 @@
+T = require './t'
+
 toString = (val) ->
   return Object.prototype.toString.call(val)
 
@@ -40,14 +42,19 @@ isNull = (val) ->
 isUndefined = (val) ->
   return val is undefined
 
-isStruct = (Struct, instance, isNullable = false) ->
-  if isArray Struct # and isArray instance
+isNullable = (val) ->
+  return val instanceof T.Nullable
+
+isStruct = (Struct, instance) ->
+  if isArray Struct
     ChildStruct = Struct[0]
     results =
       for item in instance
         isStruct ChildStruct, item
     return results.every (i) -> i is true
-
+  else if isNullable Struct
+    if isNull instance then return true
+    return isStruct Struct.type, instance
   # 構造型チェック
   else if isObject Struct
     results =

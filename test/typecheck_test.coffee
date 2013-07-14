@@ -1,4 +1,5 @@
 typecheck = require '../src/typecheck'
+T = require '../src/t'
 {ok} = require 'assert'
 
 ok typecheck.isString 'string'
@@ -28,4 +29,9 @@ ok typecheck.isStruct {
   path:["a", "b"]
 }
 
+ok typecheck.isStruct T.Nullable(Number), 1
+ok typecheck.isStruct T.Nullable(Number), null
+ok typecheck.isStruct [T.Nullable(Number)], [null, 1, null]
+
 console.log "[success]"
+
