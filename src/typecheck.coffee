@@ -47,7 +47,8 @@ isNullable = (val) ->
 
 isStruct = (Struct, instance) ->
   if isArray Struct
-    ChildStruct = Struct[0]
+    # if Struct has types, use it
+    ChildStruct = Struct[0].types ? Struct[0]
     results =
       for item in instance
         isStruct ChildStruct, item

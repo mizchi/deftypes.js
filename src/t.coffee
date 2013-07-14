@@ -19,13 +19,16 @@ class Null
     if @ instanceof Null
     else
       return new Null
+class Struct
 
 module.exports = {
+  debug: true
   Number
   String
   Boolean
   Null
   Undefined
   Nullable
+  Struct
 }
 
