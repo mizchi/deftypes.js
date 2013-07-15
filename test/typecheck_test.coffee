@@ -43,5 +43,16 @@ get_distance = def T.Func([Point, Point], Number), (m, n) ->
   return Math.sqrt( Math.pow(m.x - n.x, 2) + Math.pow(m.y - n.y, 2))
 ok 5 is get_distance({x:0, y:0},{x:3, y:4})
 
+find_n = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
+  ret = arr.indexOf(n)
+  if ret isnt -1
+    return ret
+  else
+    return null
+
+ok find_n([3,4,5], 4) is 1
+ok find_n([3,4,5], 6) is null
+
+
 console.log "[success]"
 

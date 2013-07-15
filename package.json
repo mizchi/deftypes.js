@@ -1,6 +1,6 @@
 {
   "name": "deftypes",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "type annotation DSL",
   "main": "lib/index.js",
   "directories": {

@@ -18,10 +18,10 @@ Provide.struct = (obj) ->
 
 wrapFunction = (Type, f,self = null) ->
   (args...) ->
-    # 引数の数チェック
+    # args length check
     unless args.length is Type.args.length
       throw new Error "mismatch: Arguments length"
-    # args の型チェック
+    # args check
     for i in [0...Type.args.length]
       ArgType = Type.args[i].types ? Type.args[i]
       unless typecheck.isStruct ArgType, args[i]
@@ -30,6 +30,7 @@ wrapFunction = (Type, f,self = null) ->
         throw new Error "Argument Error"
     ret = f.apply self, args
 
+    # return type check
     unless typecheck.isStruct Type.returns, ret
       throw new Error "Return Type Error"
     return ret
