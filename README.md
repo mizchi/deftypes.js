@@ -45,8 +45,6 @@ f1("",2) #=> argument error
 f2 = defun [Number, Number], String, (m, n) -> "#{m}, #{n}"
 ```
 
-### compositon
-
 ```coffee
 find_n = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
   ret = arr.indexOf(n)
@@ -59,7 +57,7 @@ find_n([3,4,5], 4) #=> 1
 find_n([3,4,5], 9) #=> null
 ```
 
-# Configurable def
+### def scope with type check
 
 ```coffee
 p = def Point, {x:1, y:2}
