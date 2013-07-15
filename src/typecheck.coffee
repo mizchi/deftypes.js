@@ -53,6 +53,9 @@ isStruct = (Struct, instance) ->
       for item in instance
         isStruct ChildStruct, item
     return results.every (i) -> i is true
+  else if Struct instanceof T.Func
+    func = Struct
+    return isFunction func
   else if isNullable Struct
     if isNull instance then return true
     return isStruct Struct.type, instance

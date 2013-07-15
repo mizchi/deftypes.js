@@ -36,15 +36,12 @@ x4 = def [Point], [{x: 1, y:2}]
 ok x4[0] instanceof Point
 
 # function
-#f1 = def Func([Number, Number], String), (m, n) -> "#{m}, #{n}"
-#r1 = def String, f1(m,n)
-#
-#wrap = (f,self = null) ->
-#  (args...) ->
-#    # args... の型チェック
-#    ret = f.apply self, args...
-#    # ret の型チェック
-#    return ret
-#
+f1 = def T.Func([Number, Number], String), (m, n) -> "#{m}, #{n}"
+f1(1,2)
+
+get_distance = def T.Func([Point, Point], Number), (m, n) ->
+  return Math.sqrt( Math.pow(m.x - n.x, 2) + Math.pow(m.y - n.y, 2))
+ok 5 is get_distance({x:0, y:0},{x:3, y:4})
+
 console.log "[success]"
 

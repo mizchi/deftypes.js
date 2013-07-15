@@ -21,6 +21,14 @@ class Null
       return new Null
 class Struct
 
+class Func
+  constructor: (args, returns) ->
+    if @ instanceof Func
+      @args = args
+      @returns = returns
+    else
+      return new Func arguments...
+
 module.exports = {
   debug: true
   Number
@@ -30,5 +38,6 @@ module.exports = {
   Undefined
   Nullable
   Struct
+  Func
 }
 
