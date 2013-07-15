@@ -45,17 +45,20 @@ isUndefined = (val) ->
 isNullable = (val) ->
   return val instanceof T.Nullable
 
+every = (arr, f) ->
+  for item in arr
+    return false unless f(item)
+  true
+
 isStruct = (Struct, instance) ->
   if isArray Struct
     # if Struct has types, use it
     ChildStruct = Struct[0].types ? Struct[0]
-    results =
-      for item in instance
-        isStruct ChildStruct, item
-    return results.every (i) -> i is true
+    return every instance, (item) ->
+      isStruct ChildStruct, item
+
   else if Struct instanceof T.Func
-    func = Struct
-    return isFunction func
+    return isFunction Struct
   else if isNullable Struct
     if isNull instance then return true
     return isStruct Struct.type, instance
@@ -64,7 +67,7 @@ isStruct = (Struct, instance) ->
     results =
       for child_param, ChildType of Struct
         isStruct(ChildType, instance[child_param])
-    return results.every (i) -> i is true
+    return every results, (i) -> i is true
 
   # インスタンス型チェック
   else
