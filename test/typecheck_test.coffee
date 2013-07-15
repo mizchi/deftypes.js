@@ -1,9 +1,10 @@
 typecheck = require '../src/typecheck'
 T = require '../src/t'
-{def, struct} = require '../src/provide'
+def = require '../src/def'
+
 {ok} = require 'assert'
 
-Point = struct { x: Number, y: Number}
+Point = {x: Number, y: Number}
 
 ok typecheck.isString 'string'
 ok typecheck.isNumber 5
