@@ -10,6 +10,8 @@ npm install deftypes
 
 ## HOW TO USE
 
+Sample code is coffee-script.
+
 ### Struct Definition
 
 ```coffee
@@ -69,8 +71,14 @@ def Point, p, ->
   @y = ""
 ```
 
+### transparent option
 
-when T.debug is false, typechecker does nothing, passing through def like transparent for avoiding performance down.
+if option.transparent is true, typechecker does nothing, passing through def like transparent for avoiding performance down.
+
+```coffee
+{option} = require 'deftypes'
+option.transparent = true
+```
 
 ## TODO
 
