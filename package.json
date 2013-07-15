@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "coffee test/typecheck_test.coffee",
-    "build": "coffee -o lib/ -c src/"
+    "build": "rm -r lib/; coffee -o lib/ -c src/"
   },
   "author": "",
   "license": "BSD"
