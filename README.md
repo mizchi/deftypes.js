@@ -45,6 +45,8 @@ f1("",2) #=> argument error
 f2 = defun [Number, Number], String, (m, n) -> "#{m}, #{n}"
 ```
 
+### compositon
+
 ```coffee
 find_n = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
   ret = arr.indexOf(n)
@@ -56,6 +58,19 @@ find_n = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
 find_n([3,4,5], 4) #=> 1
 find_n([3,4,5], 9) #=> null
 ```
+
+# Configurable def
+
+```coffee
+p = def Point, {x:1, y:2}
+def Point, p, ->
+  @x = 3
+
+# Type Error
+def Point, p, ->
+  @y = ""
+```
+
 
 when T.debug is false, typechecker does nothing, passing through def like transparent for avoiding performance down.
 

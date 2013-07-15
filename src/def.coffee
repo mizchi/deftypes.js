@@ -19,22 +19,55 @@ wrapFunction = (Type, f,self = null) ->
       throw new Error "Return Type Error"
     return ret
 
-def = (Class, instance) ->
+# coffeenize later
+`
+function clone(obj) {
+   var c = {};
+
+   for (var i in obj) {
+       var prop = obj[i];
+
+       if (typeof prop == 'object') {
+          if (prop instanceof Array) {
+              c[i] = [];
+
+              for (var j = 0; j < prop.length; j++) {
+                  c[i].push(prop[j]);
+              }
+          } else {
+              c[i] = clone(prop);
+          }
+       } else {
+          c[i] = prop;
+       }
+   }
+
+   return c;
+}
+`
+
+def = (Type, instance, scope, func) ->
+
+  if arguments.length is 3
+    return def Type, instance, [], scope
+
+  if arguments.length is 4
+    if option.transparent then func.call instance
+    else
+      unless typecheck.isStruct Type, instance
+        throw new Error "invalid object before apply function"
+      # before = clone instance
+      func.call instance
+      unless typecheck.isStruct Type, instance
+        throw new Error "invalid object before apply function"
+
   if option.transparent then return instance
 
-  Type = Class
   if typecheck.isFunction instance
     return wrapFunction Type, instance
 
-  if typecheck.isArray(Class)
-    Class = Class[0]
-    return (
-      for item in instance
-        Class.new?(item) or item
-    )
-
-  else if typecheck.isStruct Type, instance
-    return (Class.new? instance) or instance
+  if typecheck.isStruct Type, instance
+    return instance
   else
     throw new Error """
       instance: #{instance}

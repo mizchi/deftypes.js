@@ -58,5 +58,16 @@ find_n = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
 ok find_n([3,4,5], 4) is 1
 ok find_n([3,4,5], 6) is null
 
+p = def Point, {x:1, y:2}
+
+# scope implement draft
+# if you touch non-scope property, throw error
+# a little difficult. need deepCopy, deepEqual and nested query.
+# def Point, p, ['x'], -> @y = 3 #=> error
+
+def Point, p, ->
+  @x = 3
+ok p.x is 3
+
 console.log "[success]", Date.now() - start
 
