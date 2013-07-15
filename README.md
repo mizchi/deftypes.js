@@ -16,7 +16,7 @@ npm install deftypes
 ```coffee
 {def, struct, T} = require 'deftypes'
 
-Point = struct {x: Number, y: Number}
+Point = {x: Number, y: Number}
 p1 = def Point, {x:1, y:2} #=> {x: 1, y:2}
 p2 = def Point, {x:1, z:2} #=> type error
 ```
