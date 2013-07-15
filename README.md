@@ -10,7 +10,6 @@ npm install deftypes
 
 ## HOW TO USE
 
-
 ### Struct Definition
 
 ```coffee
@@ -37,6 +36,9 @@ see test/typecheck_test.coffee also.
 f1 = def T.Func([Number, Number], String), (m, n) -> "#{m}, #{n}"
 f1(1,2) #=> "1, 2"
 f1("",2) #=> argument error
+
+# Function DSL
+f2 = defun [Number, Number], String, (m, n) -> "#{m}, #{n}"
 ```
 
 ```coffee
@@ -55,7 +57,6 @@ when T.debug is false, typechecker does nothing, passing through def like transp
 
 ## TODO
 
-- more DSL about funcion definition
 - more test
 - Float and Int
 - transparent production mode

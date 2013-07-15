@@ -1,6 +1,7 @@
 typecheck = require '../src/typecheck'
 T = require '../src/t'
 def = require '../src/def'
+{defun} = require '../src/index'
 
 {ok} = require 'assert'
 
@@ -35,6 +36,9 @@ x2 = def [Point], [{x: 1, y:2}]
 # function
 f1 = def T.Func([Number, Number], String), (m, n) -> "#{m}, #{n}"
 f1(1,2)
+
+f2 = defun [Number, Number], String, (m, n) -> "#{m}, #{n}"
+f2(1,2)
 
 get_distance = def T.Func([Point, Point], Number), (m, n) ->
   return Math.sqrt( Math.pow(m.x - n.x, 2) + Math.pow(m.y - n.y, 2))
