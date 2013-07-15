@@ -24,7 +24,7 @@ p2 = def Point, {x:1, z:2} #=> type error
 ### Nullable
 
 ```coffee
-NullableNumber = struct {n: Nullable(Number)}
+NullableNumber = struct {n: T.Nullable(Number)}
 p1 = def NullableNumber, n:1
 p2 = def NullableNumber, n:null
 ```
