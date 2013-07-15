@@ -10,21 +10,45 @@ npm install deftypes
 
 ## HOW TO USE
 
+
+### Struct Definition
+
 ```coffee
 {def, struct, T} = require 'deftypes'
 
 Point = struct {x: Number, y: Number}
 p1 = def Point, {x:1, y:2} #=> {x: 1, y:2}
 p2 = def Point, {x: 1, z:2} #=> type error
+```
 
-# function
+### Nullable
+
+```coffee
+NullableNumber = struct {n: Nullable(Number)}
+p1 = def NullableNumber, n:1
+p2 = def NullableNumber, n:null
+```
+
+see test/typecheck_test.coffee also.
+
+### Function Definition
+
+```coffee
 f1 = def T.Func([Number, Number], String), (m, n) -> "#{m}, #{n}"
 f1(1,2) #=> "1, 2"
 f1("",2) #=> argument error
+```
 
-get_distance = def T.Func([Point, Point], Number), (m, n) ->
-  return Math.sqrt( Math.pow(m.x - n.x, 2) + Math.pow(m.y - n.y, 2))
-get_distance({x:0, y:0},{x:3, y:4}) #=> 5
+```coffee
+find_n = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
+  ret = arr.indexOf(n)
+  if ret isnt -1
+    return ret
+  else
+    return null
+
+find_n([3,4,5], 4) #=> 1
+find_n([3,4,5], 9) #=> null
 ```
 
 when T.debug is false, typechecker does nothing, passing through def like transparent for avoiding performance down.
@@ -33,6 +57,7 @@ when T.debug is false, typechecker does nothing, passing through def like transp
 
 - more DSL about funcion definition
 - more test
+- Float and Int
 - transparent production mode
 - trait feature
 - valid error message
