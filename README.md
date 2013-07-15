@@ -1,4 +1,4 @@
-# Deftypes
+# Deftypes.js
 
 JavaScript type annotaion DSL library for structure and function.
 
@@ -23,12 +23,16 @@ p2 = def Point, {x:1, z:2} #=> type error
 ### Nullable
 
 ```coffee
-NullableNumber = struct {n: T.Nullable(Number)}
+NullableNumber = {n: T.Nullable(Number)}
 p1 = def NullableNumber, n:1
 p2 = def NullableNumber, n:null
 ```
 
-see test/typecheck_test.coffee also.
+### Array
+
+```coffee
+number_list = def [Number], [1,2,3]
+```
 
 ### Function Definition
 
@@ -57,15 +61,12 @@ when T.debug is false, typechecker does nothing, passing through def like transp
 
 ## TODO
 
-- more test
-- Float and Int
-- transparent production mode
 - trait feature
-- valid error message
 - browser build
 - struct inheritance
-- fix struct definition
-- separate type system from this repo
+- Float and Int
+- abstract Context
+- valid error message
 
 ## CAUTION
 
