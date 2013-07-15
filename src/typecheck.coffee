@@ -1,4 +1,5 @@
 T = require './t'
+option = require './option'
 
 toString = (val) ->
   return Object.prototype.toString.call(val)
@@ -51,6 +52,8 @@ every = (arr, f) ->
   true
 
 isStruct = (Struct, instance) ->
+  if option.transparent then return true
+
   if isArray Struct
     ChildStruct = Struct[0]
     return every instance, (item) ->

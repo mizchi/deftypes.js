@@ -30,7 +30,6 @@ class Func
       return new Func arguments...
 
 module.exports = {
-  debug: true
   Number
   String
   Boolean

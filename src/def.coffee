@@ -1,5 +1,6 @@
 T = require './t'
 typecheck = require './typecheck'
+option = require './option'
 
 wrapFunction = (Type, f,self = null) ->
   (args...) ->
@@ -10,8 +11,6 @@ wrapFunction = (Type, f,self = null) ->
     for i in [0...Type.args.length]
       ArgType = Type.args[i]
       unless typecheck.isStruct ArgType, args[i]
-        console.log Type.args[i]
-        console.log args[i]
         throw new Error "Argument Error"
     ret = f.apply self, args
 
@@ -21,19 +20,20 @@ wrapFunction = (Type, f,self = null) ->
     return ret
 
 def = (Class, instance) ->
-  Type = Class
+  if option.transparent then return instance
 
+  Type = Class
   if typecheck.isFunction instance
     return wrapFunction Type, instance
 
-  if !T.debug or typecheck.isArray(Class)
+  if typecheck.isArray(Class)
     Class = Class[0]
     return (
       for item in instance
         Class.new?(item) or item
     )
 
-  else if !T.debug or (typecheck.isStruct Type, instance)
+  else if typecheck.isStruct Type, instance
     return (Class.new? instance) or instance
   else
     throw new Error """

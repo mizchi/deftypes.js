@@ -3,7 +3,11 @@ T = require '../src/t'
 def = require '../src/def'
 {defun} = require '../src/index'
 
+option = require '../src/option'
+option.transparent = false
 {ok} = require 'assert'
+
+start = Date.now()
 
 Point = {x: Number, y: Number}
 
@@ -54,6 +58,5 @@ find_n = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
 ok find_n([3,4,5], 4) is 1
 ok find_n([3,4,5], 6) is null
 
-
-console.log "[success]"
+console.log "[success]", Date.now() - start
 
