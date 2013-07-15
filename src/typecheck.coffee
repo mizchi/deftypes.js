@@ -52,16 +52,15 @@ every = (arr, f) ->
 
 isStruct = (Struct, instance) ->
   if isArray Struct
-    # if Struct has types, use it
-    ChildStruct = Struct[0].types ? Struct[0]
+    ChildStruct = Struct[0]
     return every instance, (item) ->
       isStruct ChildStruct, item
-
   else if Struct instanceof T.Func
     return isFunction Struct
   else if isNullable Struct
     if isNull instance then return true
     return isStruct Struct.type, instance
+
   # 構造型チェック
   else if isObject Struct
     results =

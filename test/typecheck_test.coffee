@@ -29,11 +29,7 @@ ok typecheck.isStruct T.Nullable(Number), null
 ok typecheck.isStruct [T.Nullable(Number)], [null, 1, null]
 # def
 x1 = def Point, {x: 1, y:2}
-ok (x1 instanceof Point)
-x2 = def Point, Point.new(x:1, y:2)
-x3 = def {x: Number, y: Number}, Point.new(x:1, y:2)
-x4 = def [Point], [{x: 1, y:2}]
-ok x4[0] instanceof Point
+x2 = def [Point], [{x: 1, y:2}]
 
 # function
 f1 = def T.Func([Number, Number], String), (m, n) -> "#{m}, #{n}"

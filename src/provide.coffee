@@ -2,19 +2,7 @@ T = require './t'
 typecheck = require './typecheck'
 
 Provide = module.exports = {}
-
-Provide.struct = (obj) ->
-  return class extends T.Struct
-    @types: obj
-    @new: (params) ->
-      if !T.debug or typecheck.isStruct(@types, params)
-        return new this params
-      else
-        throw "type error"
-
-    constructor: (params)->
-      for key, val of params
-        this[key] = val
+Provide.struct = (obj) -> obj
 
 wrapFunction = (Type, f,self = null) ->
   (args...) ->
@@ -23,7 +11,7 @@ wrapFunction = (Type, f,self = null) ->
       throw new Error "mismatch: Arguments length"
     # args check
     for i in [0...Type.args.length]
-      ArgType = Type.args[i].types ? Type.args[i]
+      ArgType = Type.args[i]
       unless typecheck.isStruct ArgType, args[i]
         console.log Type.args[i]
         console.log args[i]
@@ -36,7 +24,7 @@ wrapFunction = (Type, f,self = null) ->
     return ret
 
 Provide.def = (Class, instance) ->
-  Type = Class.types ? Class
+  Type = Class
 
   if typecheck.isFunction instance
     return wrapFunction Type, instance
