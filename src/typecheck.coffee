@@ -76,6 +76,7 @@ isStruct = (Struct, instance) ->
     switch Struct
       when String then return isString instance
       when Number then return isNumber instance
+      when Boolean then return isBoolean instance
       else
         return instance instanceof Struct
 
