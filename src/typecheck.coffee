@@ -56,28 +56,28 @@ every = (arr, f) ->
     return false unless f(item)
   true
 
-isType = (Type, val) ->
+isType = (type, val) ->
   if option.transparent then return true
 
-  if isArray Type
-    ChildType = Type[0]
+  if isArray type
+    child_type = type[0]
     return every val, (item) ->
-      isType ChildType, item
-  else if Type instanceof T.Func
-    return isFunction Type
+      isType child_type, item
+  else if type instanceof T.Func
+    return isFunction type
 
-  else if Type instanceof T.ContextType
-    return Type.validate(val)
+  else if type instanceof T.ContextType
+    return type.validate(val)
 
   # 構造型チェック
-  else if isObject Type
+  else if isObject type
     results =
-      for child_param, ChildType of Type
-        isType(ChildType, val[child_param])
+      for child_param, child_type of type
+        isType(child_type, val[child_param])
     return every results, (i) -> i is true
 
   # インスタンス型チェック
-  else if isInstanceOf Type, val
+  else if isInstanceOf type, val
     return true
 
   throw 'irregular type'
