@@ -1,14 +1,13 @@
 {
   "name": "deftypes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "type annotation DSL",
   "main": "lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "coffee test/typecheck_test.coffee",
-    "build": "rm -r lib/; coffee -o lib/ -c src/"
+    "test": "coffee test/typecheck_test.coffee"
   },
   "author": "",
   "license": "BSD",
