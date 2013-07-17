@@ -20,6 +20,11 @@ isInstanceOf = (type, val) ->
 
 class ContextType
 
+class Any extends ContextType
+  constructor: ->
+    return new Any unless @ instanceof Any
+  validate: (val) -> true
+
 class Nullable extends ContextType
   constructor: (type) ->
     return new Nullable(arguments...) unless @ instanceof Nullable
@@ -36,11 +41,6 @@ class Null extends ContextType
   constructor: ->
     return new Null(arguments...) unless @ instanceof Null
 
-class Any extends ContextType
-  constructor: ->
-    return new Any(arguments...) unless @ instanceof Any
-
-  validate: (val) -> true
 
 class Func extends ContextType
   constructor: (args, returns) ->
@@ -57,5 +57,7 @@ module.exports = {
   Undefined
   Nullable
   Func
+  Any
+  any: Any()
 }
 

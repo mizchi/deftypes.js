@@ -31,6 +31,10 @@ ok typecheck.isType {x:Number, y:Number}, {x:1, y:2}
 ok typecheck.isType [{x:Number, y:Number}], [{x:1, y:2}, {x:3, y:2}]
 ok typecheck.isType {n:Number, path:[String] }, {n:1,path:["a", "b"]}
 
+# ContextType
+ok typecheck.isType T.any, 3
+ok typecheck.isType T.any, {}
+
 # Nullable
 ok typecheck.isType T.Nullable(Number), 1
 ok typecheck.isType T.Nullable(Number), null
