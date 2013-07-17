@@ -1,33 +1,34 @@
-Null = -> null
-Undefined = -> undefined
+typecheck = require './typecheck'
 
-class Nullable
+class TypeBase
+
+class Nullable extends TypeBase
   constructor: (type) ->
-    if @ instanceof Nullable
-      @type = type
-    else
-      return new Nullable arguments...
+    return new Nullable(arguments...) unless @ instanceof Nullable
+    @type = type
 
-class Undefined
+  validate: (val) ->
+    val is null or typechek.isType @type, val
+
+class Undefined extends TypeBase
   constructor: ->
-    if @ instanceof Undefined
-    else
-      return new Undefined
+    return new Undefined(arguments...) unless @ instanceof Undefined
 
-class Null
+class Null extends TypeBase
   constructor: ->
-    if @ instanceof Null
-    else
-      return new Null
-class Struct
+    return new Null(arguments...) unless @ instanceof Null
 
-class Func
+class Any extends TypeBase
+  constructor: ->
+    return new Any(arguments...) unless @ instanceof Any
+
+  validate: (val) -> true
+
+class Func extends TypeBase
   constructor: (args, returns) ->
-    if @ instanceof Func
-      @args = args
-      @returns = returns
-    else
-      return new Func arguments...
+    return new Func(arguments...) unless @ instanceof Func
+    @args = args
+    @returns = returns
 
 module.exports = {
   Number
@@ -36,7 +37,6 @@ module.exports = {
   Null
   Undefined
   Nullable
-  Struct
   Func
 }
 
