@@ -59,6 +59,7 @@ every = (arr, f) ->
 isType = (type, val) ->
   if option.transparent then return true
 
+  # array check
   if isArray type
     child_type = type[0]
     return every val, (item) ->
@@ -66,14 +67,17 @@ isType = (type, val) ->
   else if type instanceof T.ContextType
     return type.validate(val)
 
-  # 構造型チェック
+  # dont check anymore
+  if type is Object then return true
+
+  # property check
   else if isObject type
     results =
       for child_param, child_type of type
         isType(child_type, val[child_param])
     return every results, (i) -> i is true
 
-  # インスタンス型チェック
+  # instance check
   else if isInstanceOf type, val
     return true
 

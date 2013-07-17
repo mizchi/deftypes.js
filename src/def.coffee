@@ -19,27 +19,27 @@ wrapFuncWithTypeCheck = (Type, func, self = null) ->
       throw new Error "Return Type Error"
     return ret
 
-def = (type, instance, mod_func = null) ->
+def = (type, val, mod_func = null) ->
   # do nothing and return soon
   if option.transparent
-    mod_func?.call instance
-    return instance
+    mod_func?.call val
+    return val
 
   # wrap func and return
-  if typecheck.isFunction instance
-    return wrapFuncWithTypeCheck type, instance
+  if typecheck.isFunction val
+    return wrapFuncWithTypeCheck type, val
 
-  # apply mod_func to instance after type check
+  # apply mod_func to val after type check
   if typecheck.isFunction mod_func
-    unless typecheck.isType type, instance
+    unless typecheck.isType type, val
       throw new Error "invalid object before apply function"
-    mod_func.call instance
+    mod_func.call val
 
   # validate before return
-  unless typecheck.isType type, instance
-    throw new Error "invalid instance type"
+  unless typecheck.isType type, val
+    throw new Error "invalid val type"
 
-  return instance
+  return val
 
 module.exports = def
 
