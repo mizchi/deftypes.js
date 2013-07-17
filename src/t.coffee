@@ -10,6 +10,9 @@ isNumber = (val) ->
 isBoolean = (val) ->
   return toString(val) is '[object Boolean]'
 
+isFunction = (val) ->
+  return toString(val) is '[object Function]'
+
 isInstanceOf = (type, val) ->
   switch type
     when String then return isString val
@@ -41,12 +44,12 @@ class Null extends ContextType
   constructor: ->
     return new Null(arguments...) unless @ instanceof Null
 
-
 class Func extends ContextType
   constructor: (args, returns) ->
     return new Func(arguments...) unless @ instanceof Func
     @args = args
     @returns = returns
+  validate: (val) -> isFunction val and @args.length is val.length
 
 module.exports = {
   ContextType

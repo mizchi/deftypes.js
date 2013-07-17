@@ -63,9 +63,6 @@ isType = (type, val) ->
     child_type = type[0]
     return every val, (item) ->
       isType child_type, item
-  else if type instanceof T.Func
-    return isFunction type
-
   else if type instanceof T.ContextType
     return type.validate(val)
 
