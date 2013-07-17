@@ -10,12 +10,12 @@ npm install deftypes
 
 ## HOW TO USE
 
-Sample code is coffee-script.
+Examples are coffee-script.
 
 ### Struct Definition
 
 ```coffee
-{def, struct, T} = require 'deftypes'
+{def, T} = require 'deftypes'
 
 Point = {x: Number, y: Number}
 p1 = def Point, {x:1, y:2} #=> {x: 1, y:2}
