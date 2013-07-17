@@ -54,7 +54,8 @@ class Func extends ContextType
 
   validate: (val) -> isFunction val and @args.length is val.length
 
-module.exports = {
+
+T = {
   ContextType
   Nullable
   nullable: Nullable(Any)
@@ -68,3 +69,7 @@ module.exports = {
   func: Func [[Any()]], Any()
 }
 
+if module?
+  module.exports = T
+else if window?
+  Deftypes.T = T

@@ -24,11 +24,12 @@ module.exports = (grunt) ->
     watch:
       coffee:
         files: "src/**/*.coffee",
-        tasks: ["coffee"]
+        tasks: ["build"]
 
     concat:
       app:
         src:[
+          "lib/browser.js"
           "lib/option.js"
           "lib/types.js"
           "lib/typecheck.js"
@@ -37,5 +38,5 @@ module.exports = (grunt) ->
         ]
         dest: "deftypes.js"
 
-  grunt.registerTask "run", ["coffee","connect", "watch"]
+  grunt.registerTask "run", ["coffee","concat", "connect", "watch"]
   grunt.registerTask "build", ["coffee","concat"]

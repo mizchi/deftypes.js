@@ -1,5 +1,8 @@
-T = require './types'
-option = require './option'
+if module?
+  T = require './types'
+  option = require './option'
+else if window?
+  {T, option} = Deftypes
 
 toString = (val) ->
   return Object.prototype.toString.call(val)
@@ -83,7 +86,7 @@ isType = (type, val) ->
 
   throw 'irregular type'
 
-module.exports = {
+typecheck = {
   toString
   isString
   isNumber
@@ -99,3 +102,8 @@ module.exports = {
   isUndefined
   isType
 }
+
+if module?
+  module.exports = typecheck
+else if window?
+  Deftypes.typecheck = typecheck

@@ -1,6 +1,9 @@
-T = require './types'
-typecheck = require './typecheck'
-option = require './option'
+if module?
+  T = require './types'
+  typecheck = require './typecheck'
+  option = require './option'
+else if window?
+  {T, typecheck, option} = Deftypes
 
 wrapFuncWithTypeCheck = (Type, func, self = null) ->
   (args...) ->
@@ -41,5 +44,8 @@ def = (type, val, mod_func = null) ->
 
   return val
 
-module.exports = def
 
+if module?
+  module.exports = def
+else if window?
+  Deftypes.def = def
