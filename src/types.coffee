@@ -47,10 +47,10 @@ class Null extends ContextType
   validate: (val) -> val is null
 
 class Func extends ContextType
-  constructor: (args, returns) ->
+  constructor: (args, return_type) ->
     return new Func(arguments...) unless @ instanceof Func
     @args = args
-    @returns = returns
+    @return_type = return_type
 
   validate: (val) -> isFunction val and @args.length is val.length
 

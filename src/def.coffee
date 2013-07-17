@@ -15,7 +15,7 @@ wrapFuncWithTypeCheck = (Type, func, self = null) ->
     ret = func.apply self, args
 
     # return type check
-    unless typecheck.isType Type.returns, ret
+    unless typecheck.isType Type.return_type, ret
       throw new Error "Return Type Error"
     return ret
 
