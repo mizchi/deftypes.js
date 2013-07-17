@@ -34,9 +34,6 @@ isRegExp = (val) ->
 isDate = (val) ->
   return toString(val) is '[object Date]'
 
-isDomNode = (val) ->
-  return val and isString(val.nodeName) and isArrayLike(val.childNodes)
-
 isNull = (val) ->
   return val is null
 
@@ -45,6 +42,14 @@ isUndefined = (val) ->
 
 isNullable = (val) ->
   return val instanceof T.Nullable
+
+isInstanceOf = (type, val) ->
+  switch type
+    when String then return isString val
+    when Number then return isNumber val
+    when Boolean then return isBoolean val
+    else
+      return val instanceof type
 
 every = (arr, f) ->
   for item in arr
@@ -60,9 +65,9 @@ isType = (Type, val) ->
       isType ChildType, item
   else if Type instanceof T.Func
     return isFunction Type
-  else if isNullable Type
-    if isNull val then return true
-    return isType Type.type, val
+
+  else if Type instanceof T.ContextType
+    return Type.validate(val)
 
   # 構造型チェック
   else if isObject Type
@@ -72,13 +77,10 @@ isType = (Type, val) ->
     return every results, (i) -> i is true
 
   # インスタンス型チェック
-  else
-    switch Type
-      when String then return isString val
-      when Number then return isNumber val
-      when Boolean then return isBoolean val
-      else
-        return val instanceof Type
+  else if isInstanceOf Type, val
+    return true
+
+  throw 'irregular type'
 
 module.exports = {
   toString
@@ -92,7 +94,6 @@ module.exports = {
   isObjectLike
   isRegExp
   isDate
-  isDomNode
   isNull
   isUndefined
   isType

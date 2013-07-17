@@ -1,4 +1,22 @@
-typecheck = require './typecheck'
+toString = (val) ->
+  return Object.prototype.toString.call(val)
+
+isString = (val) ->
+  return toString(val) is '[object String]'
+
+isNumber = (val) ->
+  return toString(val) is '[object Number]' and !isNaN(val)
+
+isBoolean = (val) ->
+  return toString(val) is '[object Boolean]'
+
+isInstanceOf = (type, val) ->
+  switch type
+    when String then return isString val
+    when Number then return isNumber val
+    when Boolean then return isBoolean val
+    else
+      return val instanceof type
 
 class ContextType
 
@@ -8,7 +26,7 @@ class Nullable extends ContextType
     @type = type
 
   validate: (val) ->
-    val is null or typechek.isType @type, val
+    val is null or isInstanceOf @type, val
 
 class Undefined extends ContextType
   constructor: ->
