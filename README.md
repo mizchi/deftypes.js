@@ -2,21 +2,52 @@
 
 JavaScript type annotaion DSL library for structure and function.
 
-## Install
+```
+<script src="https://raw.github.com/mizchi/deftypes.js/master/deftypes.js"></script>
+```
+
+or download deftypes.js
+
+
+## Provide simple DSL and No side effects
+
+It is type checker on execution(not static).
+
+Deftypes can avoid all side effects if you want. It may be also good on testing framework.
+
+
+## How to use
+
+Examples are coffee-script.
+
+
+#### Node
 
 ```
 npm install deftypes
 ```
 
-## HOW TO USE
+```
+{def, defun, T} = require 'deftypes'
+```
 
-Examples are coffee-script.
+#### Browser
+
+```
+<script src="https://raw.github.com/mizchi/deftypes.js/master/deftypes.js"></script>
+```
+
+or download deftypes.js
+
+```
+Deftypes()
+```
+
+It provides DSLs.
 
 ### Struct Definition
 
 ```coffee
-{def, T} = require 'deftypes'
-
 Point = {x: Number, y: Number}
 p1 = def Point, {x:1, y:2} #=> {x: 1, y:2}
 p2 = def Point, {x:1, z:2} #=> type error
@@ -88,6 +119,10 @@ if option.transparent is true, typechecker does nothing, passing through def lik
 ```coffee
 {option} = require 'deftypes'
 option.transparent = true
+```
+
+```coffee
+Deftypes.option.transparent = true
 ```
 
 ## TODO
