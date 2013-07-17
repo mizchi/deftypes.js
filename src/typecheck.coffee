@@ -51,34 +51,34 @@ every = (arr, f) ->
     return false unless f(item)
   true
 
-isStruct = (Struct, instance) ->
+isType = (Type, instance) ->
   if option.transparent then return true
 
-  if isArray Struct
-    ChildStruct = Struct[0]
+  if isArray Type
+    ChildType = Type[0]
     return every instance, (item) ->
-      isStruct ChildStruct, item
-  else if Struct instanceof T.Func
-    return isFunction Struct
-  else if isNullable Struct
+      isType ChildType, item
+  else if Type instanceof T.Func
+    return isFunction Type
+  else if isNullable Type
     if isNull instance then return true
-    return isStruct Struct.type, instance
+    return isType Type.type, instance
 
   # 構造型チェック
-  else if isObject Struct
+  else if isObject Type
     results =
-      for child_param, ChildType of Struct
-        isStruct(ChildType, instance[child_param])
+      for child_param, ChildType of Type
+        isType(ChildType, instance[child_param])
     return every results, (i) -> i is true
 
   # インスタンス型チェック
   else
-    switch Struct
+    switch Type
       when String then return isString instance
       when Number then return isNumber instance
       when Boolean then return isBoolean instance
       else
-        return instance instanceof Struct
+        return instance instanceof Type
 
 module.exports = {
   toString
@@ -95,5 +95,5 @@ module.exports = {
   isDomNode
   isNull
   isUndefined
-  isStruct
+  isType
 }

@@ -7,6 +7,17 @@ option = require '../src/option'
 option.transparent = false
 {ok} = require 'assert'
 
+be_error = (f) ->
+  is_error = false
+  try
+    f()
+    is_error = false
+  catch e
+    is_error = true
+  if is_error
+    return
+  throw new Error("error doesnt occur")
+
 start = Date.now()
 
 Point = {x: Number, y: Number}
@@ -24,15 +35,15 @@ ok typecheck.isDate new Date
 # ok typecheck.isDomNode new HTMLElement
 ok typecheck.isNull null
 ok typecheck.isUndefined undefined
-# isStruct
-ok typecheck.isStruct Number, 1
-ok typecheck.isStruct [Number], [1,2,3]
-ok typecheck.isStruct {x:Number, y:Number}, {x:1, y:2}
-ok typecheck.isStruct [{x:Number, y:Number}], [{x:1, y:2}, {x:3, y:2}]
-ok typecheck.isStruct { n:Number, path:[String] },{ n:1,path:["a", "b"]}
-ok typecheck.isStruct T.Nullable(Number), 1
-ok typecheck.isStruct T.Nullable(Number), null
-ok typecheck.isStruct [T.Nullable(Number)], [null, 1, null]
+# isType
+ok typecheck.isType Number, 1
+ok typecheck.isType [Number], [1,2,3]
+ok typecheck.isType {x:Number, y:Number}, {x:1, y:2}
+ok typecheck.isType [{x:Number, y:Number}], [{x:1, y:2}, {x:3, y:2}]
+ok typecheck.isType { n:Number, path:[String] },{ n:1,path:["a", "b"]}
+ok typecheck.isType T.Nullable(Number), 1
+ok typecheck.isType T.Nullable(Number), null
+ok typecheck.isType [T.Nullable(Number)], [null, 1, null]
 # def
 x1 = def Point, {x: 1, y:2}
 x2 = def [Point], [{x: 1, y:2}]
@@ -40,6 +51,9 @@ x2 = def [Point], [{x: 1, y:2}]
 # function
 f1 = def T.Func([Number, Number], String), (m, n) -> "#{m}, #{n}"
 f1(1,2)
+be_error ->
+  f1("",2)
+
 
 f2 = defun [Number, Number], String, (m, n) -> "#{m}, #{n}"
 f2(1,2)
@@ -60,14 +74,15 @@ ok find_n([3,4,5], 6) is null
 
 p = def Point, {x:1, y:2}
 
-# scope implement draft
-# if you touch non-scope property, throw error
-# a little difficult. need deepCopy, deepEqual and nested query.
-# def Point, p, ['x'], -> @y = 3 #=> error
-
 def Point, p, ->
   @x = 3
 ok p.x is 3
+
+be_error ->
+  def Point, p, ->
+    @x = ""
+
+
 
 console.log "[success]", Date.now() - start
 
