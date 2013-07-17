@@ -39,28 +39,32 @@ class Nullable extends ContextType
 class Undefined extends ContextType
   constructor: ->
     return new Undefined(arguments...) unless @ instanceof Undefined
+  validate: (val) -> val is undefined
 
 class Null extends ContextType
   constructor: ->
     return new Null(arguments...) unless @ instanceof Null
+  validate: (val) -> val is null
 
 class Func extends ContextType
   constructor: (args, returns) ->
     return new Func(arguments...) unless @ instanceof Func
     @args = args
     @returns = returns
+
   validate: (val) -> isFunction val and @args.length is val.length
 
 module.exports = {
   ContextType
-  Number
-  String
-  Boolean
-  Null
-  Undefined
   Nullable
-  Func
+  nullable: Nullable(Any)
   Any
   any: Any()
+  Null
+  null:Null()
+  Undefined
+  undefined: Undefined()
+  Func
+  func: Func [[Any()]], Any()
 }
 
