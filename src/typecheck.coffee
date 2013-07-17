@@ -1,4 +1,4 @@
-T = require './t'
+T = require './types'
 option = require './option'
 
 toString = (val) ->

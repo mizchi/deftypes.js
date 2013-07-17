@@ -1,5 +1,5 @@
 typecheck = require '../src/typecheck'
-T = require '../src/t'
+T = require '../src/types'
 def = require '../src/def'
 {defun} = require '../src/index'
 {ok, ng, error} = require './spec_helper'
