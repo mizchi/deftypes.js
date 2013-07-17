@@ -51,34 +51,34 @@ every = (arr, f) ->
     return false unless f(item)
   true
 
-isType = (Type, instance) ->
+isType = (Type, val) ->
   if option.transparent then return true
 
   if isArray Type
     ChildType = Type[0]
-    return every instance, (item) ->
+    return every val, (item) ->
       isType ChildType, item
   else if Type instanceof T.Func
     return isFunction Type
   else if isNullable Type
-    if isNull instance then return true
-    return isType Type.type, instance
+    if isNull val then return true
+    return isType Type.type, val
 
   # 構造型チェック
   else if isObject Type
     results =
       for child_param, ChildType of Type
-        isType(ChildType, instance[child_param])
+        isType(ChildType, val[child_param])
     return every results, (i) -> i is true
 
   # インスタンス型チェック
   else
     switch Type
-      when String then return isString instance
-      when Number then return isNumber instance
-      when Boolean then return isBoolean instance
+      when String then return isString val
+      when Number then return isNumber val
+      when Boolean then return isBoolean val
       else
-        return instance instanceof Type
+        return val instanceof Type
 
 module.exports = {
   toString
