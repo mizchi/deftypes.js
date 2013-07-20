@@ -1,11 +1,12 @@
 if module?
-  T = require "./types"
+  T = require("./types")
   def = require("./def")
   module.exports =
-    T: require "./types"
+    T: require("./types")
     def: require("./def")
     defun: (args, return_type, f) -> def T.Func(args, return_type), f
-    option: require("./option")
+    option: require("./option").option
+
 else if window?
   {T, def} = Deftypes
   Deftypes.defun =  (args, return_type, f) -> def T.Func(args, return_type), f

@@ -1,8 +1,4 @@
-option =
-  transparent: false
+g = (if module? then exports else Deftypes).option = {}
 
-if module?
-  module.exports = option
-else if window?
-  Deftypes.option = option
+g.option = transparent: false
 

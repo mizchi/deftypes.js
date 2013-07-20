@@ -1,72 +1,65 @@
-if module?
-  T = require './types'
-  option = require './option'
-else if window?
-  {T, option} = Deftypes
+g = (if module? then exports else Deftypes).typecheck = {}
+T = (if module? then require('./types') else Deftypes.T)
 
-toString = (val) ->
+g.toString = (val) ->
   return Object.prototype.toString.call(val)
 
-isString = (val) ->
-  return toString(val) is '[object String]'
+g.isString = (val) ->
+  return g.toString(val) is '[object String]'
 
-isNumber = (val) ->
-  return toString(val) is '[object Number]' and !isNaN(val)
+g.isNumber = (val) ->
+  return g.toString(val) is '[object Number]' and !isNaN(val)
 
-isBoolean = (val) ->
-  return toString(val) is '[object Boolean]'
+g.isBoolean = (val) ->
+  return g.toString(val) is '[object Boolean]'
 
-isFunction = (val) ->
-  return toString(val) is '[object Function]'
+g.isFunction = (val) ->
+  return g.toString(val) is '[object Function]'
 
-isArray = (val) ->
-  return toString(val) is '[object Array]'
+g.isArray = (val) ->
+  return g.toString(val) is '[object Array]'
 
-isArrayLike = (val) ->
-  return isArray(val) or (val and typeof(val) is 'object' and isNumber(val.length))
+g.isArrayLike = (val) ->
+  return g.isArray(val) or (val and typeof(val) is 'object' and g.isNumber(val.length))
 
-isObject = (val) ->
-  return toString(val) is '[object Object]'
+g.isObject = (val) ->
+  return g.toString(val) is '[object Object]'
 
-isObjectLike = (val) ->
+g.isObjectLike = (val) ->
   return val isnt null and typeof(val) is 'object'
 
-isRegExp = (val) ->
-  return toString(val) is '[object RegExp]'
+g.isRegExp = (val) ->
+  return g.toString(val) is '[object RegExp]'
 
-isDate = (val) ->
-  return toString(val) is '[object Date]'
+g.isDate = (val) ->
+  return g.toString(val) is '[object Date]'
 
-isNull = (val) ->
+g.isNull = (val) ->
   return val is null
 
-isUndefined = (val) ->
+g.isUndefined = (val) ->
   return val is undefined
 
-isNullable = (val) ->
-  return val instanceof T.Nullable
-
-isInstanceOf = (type, val) ->
+g.isInstanceOf = (type, val) ->
   switch type
-    when String then return isString val
-    when Number then return isNumber val
-    when Boolean then return isBoolean val
-    else
-      return val instanceof type
+    when String then return g.isString val
+    when Number then return g.isNumber val
+    when Boolean then return g.isBoolean val
+    # else
+    #   # true
+    #   return (val instanceof type)
 
 every = (arr, f) ->
   for item in arr
     return false unless f(item)
   true
 
-isType = (type, val) ->
-  if option.transparent then return true
-
+g.isType = (type, val) ->
   # array check
-  if isArray type
+  if g.isArray type
     child_type = type[0]
     return every val, (item) ->
-      isType child_type, item
+      g.isType child_type, item
   else if type instanceof T.ContextType
     return type.validate(val)
 
@@ -74,36 +67,14 @@ isType = (type, val) ->
   if type is Object then return true
 
   # property check
-  else if isObject type
+  else if g.isObject type
     results =
       for child_param, child_type of type
-        isType(child_type, val[child_param])
+        g.isType(child_type, val[child_param])
     return every results, (i) -> i is true
 
   # instance check
-  else if isInstanceOf type, val
+  else if g.isInstanceOf type, val
     return true
 
   throw 'irregular type'
-
-typecheck = {
-  toString
-  isString
-  isNumber
-  isBoolean
-  isFunction
-  isArray
-  isArrayLike
-  isObject
-  isObjectLike
-  isRegExp
-  isDate
-  isNull
-  isUndefined
-  isType
-}
-
-if module?
-  module.exports = typecheck
-else if window?
-  Deftypes.typecheck = typecheck

@@ -1,7 +1,7 @@
 if module?
-  T = require './types'
-  typecheck = require './typecheck'
-  option = require './option'
+  T = require('./types')
+  {typecheck} = require './typecheck'
+  {option} = require './option'
 else if window?
   {T, typecheck, option} = Deftypes
 

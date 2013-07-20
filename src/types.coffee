@@ -1,3 +1,4 @@
+
 toString = (val) ->
   return Object.prototype.toString.call(val)
 
