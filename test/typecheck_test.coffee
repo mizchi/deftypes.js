@@ -20,6 +20,14 @@ ok typecheck.isType {x:Number, y:Number}, {x:1, y:2}
 ok typecheck.isType [{x:Number, y:Number}], [{x:1, y:2}, {x:3, y:2}]
 ok typecheck.isType {n:Number, path:[String] }, {n:1,path:["a", "b"]}
 ok typecheck.isType T.Hash(String, Number), {"p1": 5, "p2": 3}
+ng typecheck.isType T.Hash(String, Number), {"p1": "str", "p2": 3}
+
+ok typecheck.isType T.Undefined, undefined
+ok typecheck.isType T.Null, null
+ng typecheck.isType T.Undefined, null
+ok typecheck.isType T.None, null
+ok typecheck.isType T.None, undefined
+
 
 
 # ContextType

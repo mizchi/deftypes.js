@@ -15,6 +15,9 @@ every = (arr, f) ->
   true
 
 g.isType = (type, val) ->
+  if type is undefined
+    throw new Error 'type must not be undefined'
+
   # array check
   if isArray type
     child_type = type[0]
@@ -36,5 +39,5 @@ g.isType = (type, val) ->
   # instance check
   else if isPrimitiveOf type, val
     return true
-
-  throw new Error "irregular type #{type}, #{val}"
+  else
+    return false
