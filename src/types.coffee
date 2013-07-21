@@ -69,7 +69,5 @@ Types = {
 
 if module?
   exports.Types = Types
-  exports.T = Types
 else if window?
   Deftypes.Types = Types
-  Deftypes.T = Types
