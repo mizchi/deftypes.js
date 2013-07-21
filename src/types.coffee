@@ -11,20 +11,11 @@
 } = (if module? then require('./primitive') else Deftypes).primitive
 
 {typecheck}  = (if module? then require('./typecheck') else Deftypes)
-{Context} = (if module? then require('./context') else Deftypes).context
+{Context, DirectContext} = (if module? then require('./context') else Deftypes).context
 
 class Any extends Context
-  constructor: ->
-    return new Any unless @ instanceof Any
-  validate: (val) -> true
-
-class Nullable extends Context
-  constructor: (type) ->
-    return new Nullable(arguments...) unless @ instanceof Nullable
-    @type = type
-
-  validate: (val) ->
-    val is null or isPrimitiveOf @type, val
+  @__direct__: true
+  @validate: (val) -> true
 
 class Undefined extends Context
   constructor: ->
@@ -35,6 +26,15 @@ class Null extends Context
   constructor: ->
     return new Null(arguments...) unless @ instanceof Null
   validate: (val) -> val is null
+
+class Nullable extends Context
+  constructor: (type) ->
+    return new Nullable(arguments...) unless @ instanceof Nullable
+    @type = type
+
+  validate: (val) ->
+    val is null or isPrimitiveOf @type, val
+
 
 class Func extends Context
   constructor: (args, return_type) ->
@@ -61,15 +61,10 @@ class Hash extends Context
 
 Types = {
   Nullable
-  nullable: Nullable(Any)
   Any
-  any: Any()
   Null
-  null:Null()
   Undefined
-  undefined: Undefined()
   Func
-  func: Func [[Any()]], Any()
   Hash
 }
 

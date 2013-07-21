@@ -20,7 +20,7 @@ g.isType = (type, val) ->
     child_type = type[0]
     return every val, (item) ->
       g.isType child_type, item
-  else if type instanceof Context
+  else if type instanceof Context or type.__direct__
     return type.validate(val)
 
   # dont check anymore
@@ -37,4 +37,4 @@ g.isType = (type, val) ->
   else if isPrimitiveOf type, val
     return true
 
-  throw 'irregular type'
+  throw new Error "irregular type #{type}, #{val}"

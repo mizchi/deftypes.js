@@ -23,8 +23,8 @@ ok typecheck.isType T.Hash(String, Number), {"p1": 5, "p2": 3}
 
 
 # ContextType
-ok typecheck.isType T.any, 3
-ok typecheck.isType T.any, {}
+ok typecheck.isType T.Any, 3
+ok typecheck.isType T.Any, {}
 
 # Nullable
 ok typecheck.isType T.Nullable(Number), 1
