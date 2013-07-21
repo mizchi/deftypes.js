@@ -4,9 +4,10 @@
   root = window;
 
   root.Deftypes = function() {
-    root.def = Deftypes.def;
-    root.defun = Deftypes.defun;
-    return root.T = Deftypes.T;
+    root.def = Deftypes.define.def;
+    root.defun = Deftypes.define.defun;
+    root.T = Deftypes.Types;
+    return root.Types = Deftypes.Types;
   };
 
 }).call(this);
@@ -270,10 +271,8 @@
 
   if (typeof module !== "undefined" && module !== null) {
     exports.Types = Types;
-    exports.T = Types;
   } else if (typeof window !== "undefined" && window !== null) {
     Deftypes.Types = Types;
-    Deftypes.T = Types;
   }
 
 }).call(this);
@@ -334,18 +333,20 @@
 }).call(this);
 
 (function() {
-  var T, def, defun, isFunction, option, typecheck, wrapFuncWithTypeCheck,
+  var Types, g, isFunction, option, typecheck, wrapFuncWithTypeCheck,
     __slice = [].slice;
 
   if (typeof module !== "undefined" && module !== null) {
-    T = require('./types').Types;
+    Types = require('./types').Types;
     typecheck = require('./typecheck').typecheck;
     option = require('./option').option;
   } else if (typeof window !== "undefined" && window !== null) {
-    T = Deftypes.T, typecheck = Deftypes.typecheck, option = Deftypes.option;
+    Types = Deftypes.Types, typecheck = Deftypes.typecheck, option = Deftypes.option;
   }
 
   isFunction = (typeof module !== "undefined" && module !== null ? require('./primitive') : Deftypes).primitive.isFunction;
+
+  g = (typeof module !== "undefined" && module !== null ? exports : Deftypes).define = {};
 
   wrapFuncWithTypeCheck = function(Type, func, self) {
     if (self == null) {
@@ -371,7 +372,7 @@
     };
   };
 
-  def = function(type, val, mod_func) {
+  g.def = function(type, val, mod_func) {
     if (mod_func == null) {
       mod_func = null;
     }
@@ -396,17 +397,9 @@
     return val;
   };
 
-  defun = function(args, return_type, f) {
-    return def(T.Func(args, return_type), f);
+  g.defun = function(args, return_type, f) {
+    return g.def(Types.Func(args, return_type), f);
   };
-
-  if (typeof module !== "undefined" && module !== null) {
-    exports.def = def;
-    exports.defun = defun;
-  } else if (typeof window !== "undefined" && window !== null) {
-    Deftypes.def = def;
-    Deftypes.defun = defun;
-  }
 
 }).call(this);
 
@@ -414,12 +407,11 @@
   if (typeof module !== "undefined" && module !== null) {
     module.exports = {
       T: require("./types"),
-      def: require("./def").def,
-      defun: require("./def").defun,
+      Types: require("./types"),
+      def: require("./define").difine.def,
+      defun: require("./define").difine.defun,
       option: require("./option").option
     };
-  } else if (typeof window !== "undefined" && window !== null) {
-    Deftypes.defun = Deftypes.defun;
   }
 
 }).call(this);

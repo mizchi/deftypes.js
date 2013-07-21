@@ -1,17 +1,17 @@
-if module?
-  T = require('./types').Types
-  {typecheck} = require './typecheck'
-  {option} = require './option'
-else if window?
-  {T, typecheck, option} = Deftypes
+# types, typecheck, option, primitive
+{Types}      = if module? then require('./types')     else Deftypes
+{typecheck}  = if module? then require('./typecheck') else Deftypes
+{option}     = if module? then require('./option')    else Deftypes
+{isFunction} = (if module? then require('./primitive') else Deftypes).primitive
 
-{isFunction} = (if module? then (require './primitive') else Deftypes).primitive
+g = (if module? then exports else Deftypes).define = {}
 
-wrapFuncWithTypeCheck = (Type, func, self = null) ->
+wrap_func_with_typecheck = (Type, func, self = null) ->
   (args...) ->
     # args length check
     unless args.length is Type.args.length
       throw new Error "mismatch: Arguments length"
+
     # args check
     for i in [0...Type.args.length]
       ArgType = Type.args[i]
@@ -24,7 +24,7 @@ wrapFuncWithTypeCheck = (Type, func, self = null) ->
       throw new Error "Return Type Error"
     return ret
 
-def = (type, val, mod_func = null) ->
+g.def = (type, val, mod_func = null) ->
   # do nothing and return soon
   if option.transparent
     mod_func?.call val
@@ -32,7 +32,7 @@ def = (type, val, mod_func = null) ->
 
   # wrap func and return
   if isFunction val
-    return wrapFuncWithTypeCheck type, val
+    return wrap_func_with_typecheck type, val
 
   # apply mod_func to val after type check
   if isFunction mod_func
@@ -46,11 +46,4 @@ def = (type, val, mod_func = null) ->
 
   return val
 
-defun = (args, return_type, f) -> def T.Func(args, return_type), f
-
-if module?
-  exports.def = def
-  exports.defun = defun
-else if window?
-  Deftypes.def = def
-  Deftypes.defun = defun
+g.defun = (args, return_type, f) -> g.def Types.Func(args, return_type), f

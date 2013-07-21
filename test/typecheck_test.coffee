@@ -1,7 +1,7 @@
 if module?
   {typecheck} = require '../src/typecheck'
   T = require('../src/types').Types
-  {def, defun} = require '../src/def'
+  {def, defun} = require('../src/define').define
   {ok, ng, error} = require './spec_helper'
   {option} = require '../src/option'
 else

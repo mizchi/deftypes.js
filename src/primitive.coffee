@@ -46,3 +46,6 @@ g.isInstanceOf = (type, val) ->
     when Boolean then return g.isBoolean val
     else
       return (val instanceof type)
+
+g.isUndefined = (val) ->
+  return val is undefined

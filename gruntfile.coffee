@@ -35,7 +35,7 @@ module.exports = (grunt) ->
           "lib/context.js"
           "lib/types.js"
           "lib/typecheck.js"
-          "lib/def.js"
+          "lib/define.js"
           "lib/index.js"
         ]
         dest: "deftypes.js"

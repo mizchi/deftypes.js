@@ -1,5 +1,6 @@
 g = (if module? then exports else Deftypes).typecheck = {}
-Types = (if module? then require('./types') else Deftypes).Types
+
+# context, primitive
 {Context} = (if module? then require('./context') else Deftypes).context
 
 {

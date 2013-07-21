@@ -1,11 +1,8 @@
+# types, define, option
 if module?
   module.exports =
     T      : require("./types")
     Types  : require("./types")
-    def    : require("./def").def
-    defun  : require("./def").defun
+    def    : require("./define").difine.def
+    defun  : require("./define").difine.defun
     option : require("./option").option
-
-else if window?
-  Deftypes.defun =  Deftypes.defun
-  Deftypes.T = Deftypes.Types

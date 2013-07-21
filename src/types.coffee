@@ -1,3 +1,5 @@
+# primitive, typecheck, context
+
 {
   toString
   isString
@@ -6,6 +8,9 @@
   isFunction
   isInstanceOf
 } = (if module? then require('./primitive') else Deftypes).primitive
+
+
+{isType}  = (if module? then require('./typecheck') else Deftypes)
 {Context} = (if module? then require('./context') else Deftypes).context
 
 class Any extends Context

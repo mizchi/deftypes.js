@@ -1,6 +1,6 @@
 root = window
 root.Deftypes = ->
-  root.def = Deftypes.def
-  root.defun = Deftypes.defun
-  root.T = Deftypes.Types
+  root.def   = Deftypes.define.def
+  root.defun = Deftypes.define.defun
+  root.T     = Deftypes.Types
   root.Types = Deftypes.Types
