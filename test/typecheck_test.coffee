@@ -11,19 +11,6 @@ start = Date.now()
 
 Point = {x: Number, y: Number}
 
-ok typecheck.isString 'string'
-ok typecheck.isNumber 5
-ok typecheck.isBoolean false
-ok typecheck.isFunction ->
-ok typecheck.isArray []
-ok typecheck.isArrayLike {0:0,1:1,length:2}
-ok typecheck.isObject {}
-ok typecheck.isObjectLike new (class A)
-ok typecheck.isRegExp /xxx/
-ok typecheck.isDate new Date
-ok typecheck.isNull null
-ok typecheck.isUndefined undefined
-
 # isType
 ok typecheck.isType Number, 1
 ok typecheck.isType [Number], [1,2,3]
@@ -39,8 +26,8 @@ ok typecheck.isType T.any, {}
 ok typecheck.isType T.Nullable(Number), 1
 ok typecheck.isType T.Nullable(Number), null
 ng typecheck.isType T.Nullable(Number), undefined
-
 ok typecheck.isType [T.Nullable(Number)], [null, 1, null]
+
 
 # def
 x1 = def Point, {x: 1, y:2}
@@ -63,7 +50,7 @@ error -> f3(1,2) # return type error
 get_distance = def T.Func([Point, Point], Number), (m, n) ->
   return Math.sqrt( Math.pow(m.x - n.x, 2) + Math.pow(m.y - n.y, 2))
 
-ok 5 is get_distance({x:0, y:0},{x:3, y:4})
+ok get_distance({x:0, y:0},{x:3, y:4}) is 5
 
 find_n = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
   ret = arr.indexOf(n)

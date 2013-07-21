@@ -31,6 +31,7 @@ module.exports = (grunt) ->
         src:[
           "lib/browser.js"
           "lib/option.js"
+          "lib/primitive.js"
           "lib/types.js"
           "lib/typecheck.js"
           "lib/def.js"

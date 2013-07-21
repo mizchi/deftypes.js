@@ -5,6 +5,8 @@ if module?
 else if window?
   {T, typecheck, option} = Deftypes
 
+{isFunction} = (if module? then (require './primitive') else Deftypes).primitive
+
 wrapFuncWithTypeCheck = (Type, func, self = null) ->
   (args...) ->
     # args length check
@@ -29,11 +31,11 @@ def = (type, val, mod_func = null) ->
     return val
 
   # wrap func and return
-  if typecheck.isFunction val
+  if isFunction val
     return wrapFuncWithTypeCheck type, val
 
   # apply mod_func to val after type check
-  if typecheck.isFunction mod_func
+  if isFunction mod_func
     unless typecheck.isType type, val
       throw new Error "invalid object before apply function"
     mod_func.call val

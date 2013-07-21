@@ -11,57 +11,98 @@
 }).call(this);
 
 (function() {
-  var option;
+  var g;
 
-  option = {
+  g = (typeof module !== "undefined" && module !== null ? exports : Deftypes).option = {};
+
+  g.option = {
     transparent: false
   };
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = option;
-  } else if (typeof window !== "undefined" && window !== null) {
-    Deftypes.option = option;
-  }
 
 }).call(this);
 
 (function() {
-  var Any, ContextType, Func, Null, Nullable, T, Undefined, isBoolean, isFunction, isInstanceOf, isNumber, isString, toString,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var g;
 
-  toString = function(val) {
+  g = (typeof module !== "undefined" && module !== null ? exports : Deftypes).primitive = {};
+
+  g.toString = function(val) {
     return Object.prototype.toString.call(val);
   };
 
-  isString = function(val) {
-    return toString(val) === '[object String]';
+  g.isString = function(val) {
+    return g.toString(val) === '[object String]';
   };
 
-  isNumber = function(val) {
-    return toString(val) === '[object Number]' && !isNaN(val);
+  g.isNumber = function(val) {
+    return g.toString(val) === '[object Number]' && !isNaN(val);
   };
 
-  isBoolean = function(val) {
-    return toString(val) === '[object Boolean]';
+  g.isBoolean = function(val) {
+    return g.toString(val) === '[object Boolean]';
   };
 
-  isFunction = function(val) {
-    return toString(val) === '[object Function]';
+  g.isFunction = function(val) {
+    return g.toString(val) === '[object Function]';
   };
 
-  isInstanceOf = function(type, val) {
+  g.isArray = function(val) {
+    return g.toString(val) === '[object Array]';
+  };
+
+  g.isArrayLike = function(val) {
+    return g.isArray(val) || (val && typeof val === 'object' && g.isNumber(val.length));
+  };
+
+  g.isObject = function(val) {
+    return g.toString(val) === '[object Object]';
+  };
+
+  g.isObjectLike = function(val) {
+    return val !== null && typeof val === 'object';
+  };
+
+  g.isRegExp = function(val) {
+    return g.toString(val) === '[object RegExp]';
+  };
+
+  g.isDate = function(val) {
+    return g.toString(val) === '[object Date]';
+  };
+
+  g.isNull = function(val) {
+    return val === null;
+  };
+
+  g.isUndefined = function(val) {
+    return val === void 0;
+  };
+
+  g.isInstanceOf = function(type, val) {
     switch (type) {
       case String:
-        return isString(val);
+        return g.isString(val);
       case Number:
-        return isNumber(val);
+        return g.isNumber(val);
       case Boolean:
-        return isBoolean(val);
+        return g.isBoolean(val);
       default:
         return val instanceof type;
     }
   };
+
+  g.isUndefined = function(val) {
+    return val === void 0;
+  };
+
+}).call(this);
+
+(function() {
+  var Any, ContextType, Func, Hash, Null, Nullable, T, Undefined, isBoolean, isFunction, isInstanceOf, isNumber, isString, toString, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  _ref = (typeof module !== "undefined" && module !== null ? require('./primitive') : Deftypes).primitive, toString = _ref.toString, isString = _ref.isString, isNumber = _ref.isNumber, isBoolean = _ref.isBoolean, isFunction = _ref.isFunction, isInstanceOf = _ref.isInstanceOf;
 
   ContextType = (function() {
     function ContextType() {}
@@ -174,6 +215,39 @@
 
   })(ContextType);
 
+  Hash = (function(_super) {
+    __extends(Hash, _super);
+
+    function Hash(key_type, value_type) {
+      if (!(this instanceof Hash)) {
+        return (function(func, args, ctor) {
+          ctor.prototype = func.prototype;
+          var child = new ctor, result = func.apply(child, args);
+          return Object(result) === result ? result : child;
+        })(Hash, arguments, function(){});
+      }
+      this.key_type = key_type;
+      this.value_type = value_type;
+    }
+
+    Hash.prototype.validate = function(val) {
+      var key;
+      for (key in val) {
+        val = val[key];
+        if (key instanceof key_type) {
+          if (val instanceof val_type) {
+            continue;
+          }
+        }
+        return false;
+      }
+      return true;
+    };
+
+    return Hash;
+
+  })(ContextType);
+
   T = {
     ContextType: ContextType,
     Nullable: Nullable,
@@ -185,7 +259,8 @@
     Undefined: Undefined,
     undefined: Undefined(),
     Func: Func,
-    func: Func([[Any()]], Any())
+    func: Func([[Any()]], Any()),
+    Hash: Hash
   };
 
   if (typeof module !== "undefined" && module !== null) {
@@ -197,83 +272,13 @@
 }).call(this);
 
 (function() {
-  var T, every, isArray, isArrayLike, isBoolean, isDate, isFunction, isInstanceOf, isNull, isNullable, isNumber, isObject, isObjectLike, isRegExp, isString, isType, isUndefined, option, toString, typecheck;
+  var T, every, g, isArray, isInstanceOf, isObject, _ref;
 
-  if (typeof module !== "undefined" && module !== null) {
-    T = require('./types');
-    option = require('./option');
-  } else if (typeof window !== "undefined" && window !== null) {
-    T = Deftypes.T, option = Deftypes.option;
-  }
+  g = (typeof module !== "undefined" && module !== null ? exports : Deftypes).typecheck = {};
 
-  toString = function(val) {
-    return Object.prototype.toString.call(val);
-  };
+  T = (typeof module !== "undefined" && module !== null ? require('./types') : Deftypes.T);
 
-  isString = function(val) {
-    return toString(val) === '[object String]';
-  };
-
-  isNumber = function(val) {
-    return toString(val) === '[object Number]' && !isNaN(val);
-  };
-
-  isBoolean = function(val) {
-    return toString(val) === '[object Boolean]';
-  };
-
-  isFunction = function(val) {
-    return toString(val) === '[object Function]';
-  };
-
-  isArray = function(val) {
-    return toString(val) === '[object Array]';
-  };
-
-  isArrayLike = function(val) {
-    return isArray(val) || (val && typeof val === 'object' && isNumber(val.length));
-  };
-
-  isObject = function(val) {
-    return toString(val) === '[object Object]';
-  };
-
-  isObjectLike = function(val) {
-    return val !== null && typeof val === 'object';
-  };
-
-  isRegExp = function(val) {
-    return toString(val) === '[object RegExp]';
-  };
-
-  isDate = function(val) {
-    return toString(val) === '[object Date]';
-  };
-
-  isNull = function(val) {
-    return val === null;
-  };
-
-  isUndefined = function(val) {
-    return val === void 0;
-  };
-
-  isNullable = function(val) {
-    return val instanceof T.Nullable;
-  };
-
-  isInstanceOf = function(type, val) {
-    switch (type) {
-      case String:
-        return isString(val);
-      case Number:
-        return isNumber(val);
-      case Boolean:
-        return isBoolean(val);
-      default:
-        return val instanceof type;
-    }
-  };
+  _ref = (typeof module !== "undefined" && module !== null ? require('./primitive') : Deftypes).primitive, isArray = _ref.isArray, isObject = _ref.isObject, isInstanceOf = _ref.isInstanceOf;
 
   every = function(arr, f) {
     var item, _i, _len;
@@ -286,15 +291,12 @@
     return true;
   };
 
-  isType = function(type, val) {
+  g.isType = function(type, val) {
     var child_param, child_type, results;
-    if (option.transparent) {
-      return true;
-    }
     if (isArray(type)) {
       child_type = type[0];
       return every(val, function(item) {
-        return isType(child_type, item);
+        return g.isType(child_type, item);
       });
     } else if (type instanceof T.ContextType) {
       return type.validate(val);
@@ -307,7 +309,7 @@
         _results = [];
         for (child_param in type) {
           child_type = type[child_param];
-          _results.push(isType(child_type, val[child_param]));
+          _results.push(g.isType(child_type, val[child_param]));
         }
         return _results;
       })();
@@ -320,42 +322,21 @@
     throw 'irregular type';
   };
 
-  typecheck = {
-    toString: toString,
-    isString: isString,
-    isNumber: isNumber,
-    isBoolean: isBoolean,
-    isFunction: isFunction,
-    isArray: isArray,
-    isArrayLike: isArrayLike,
-    isObject: isObject,
-    isObjectLike: isObjectLike,
-    isRegExp: isRegExp,
-    isDate: isDate,
-    isNull: isNull,
-    isUndefined: isUndefined,
-    isType: isType
-  };
-
-  if (typeof module !== "undefined" && module !== null) {
-    module.exports = typecheck;
-  } else if (typeof window !== "undefined" && window !== null) {
-    Deftypes.typecheck = typecheck;
-  }
-
 }).call(this);
 
 (function() {
-  var T, def, option, typecheck, wrapFuncWithTypeCheck,
+  var T, def, isFunction, option, typecheck, wrapFuncWithTypeCheck,
     __slice = [].slice;
 
   if (typeof module !== "undefined" && module !== null) {
     T = require('./types');
-    typecheck = require('./typecheck');
-    option = require('./option');
+    typecheck = require('./typecheck').typecheck;
+    option = require('./option').option;
   } else if (typeof window !== "undefined" && window !== null) {
     T = Deftypes.T, typecheck = Deftypes.typecheck, option = Deftypes.option;
   }
+
+  isFunction = (typeof module !== "undefined" && module !== null ? require('./primitive') : Deftypes).primitive.isFunction;
 
   wrapFuncWithTypeCheck = function(Type, func, self) {
     if (self == null) {
@@ -391,10 +372,10 @@
       }
       return val;
     }
-    if (typecheck.isFunction(val)) {
+    if (isFunction(val)) {
       return wrapFuncWithTypeCheck(type, val);
     }
-    if (typecheck.isFunction(mod_func)) {
+    if (isFunction(mod_func)) {
       if (!typecheck.isType(type, val)) {
         throw new Error("invalid object before apply function");
       }
@@ -426,7 +407,7 @@
       defun: function(args, return_type, f) {
         return def(T.Func(args, return_type), f);
       },
-      option: require("./option")
+      option: require("./option").option
     };
   } else if (typeof window !== "undefined" && window !== null) {
     T = Deftypes.T, def = Deftypes.def;
