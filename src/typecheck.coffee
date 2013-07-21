@@ -6,7 +6,7 @@ g = (if module? then exports else Deftypes).typecheck = {}
 {
   isArray
   isObject
-  isInstanceOf
+  isPrimitiveOf
 } = (if module? then require('./primitive') else Deftypes).primitive
 
 every = (arr, f) ->
@@ -34,7 +34,7 @@ g.isType = (type, val) ->
     return every results, (i) -> i is true
 
   # instance check
-  else if isInstanceOf type, val
+  else if isPrimitiveOf type, val
     return true
 
   throw 'irregular type'

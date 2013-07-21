@@ -39,13 +39,13 @@ g.isNull = (val) ->
 g.isUndefined = (val) ->
   return val is undefined
 
-g.isInstanceOf = (type, val) ->
+g.isPrimitiveOf = (type, val) ->
   switch type
-    when String then return g.isString val
-    when Number then return g.isNumber val
+    when String  then return g.isString val
+    when Number  then return g.isNumber val
     when Boolean then return g.isBoolean val
     else
       return (val instanceof type)
 
-g.isUndefined = (val) ->
-  return val is undefined
+g.isPrimitive = (val) ->
+  val is Number of val is String or val is Boolean

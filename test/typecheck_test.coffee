@@ -19,6 +19,8 @@ ok typecheck.isType [Number], [1,2,3]
 ok typecheck.isType {x:Number, y:Number}, {x:1, y:2}
 ok typecheck.isType [{x:Number, y:Number}], [{x:1, y:2}, {x:3, y:2}]
 ok typecheck.isType {n:Number, path:[String] }, {n:1,path:["a", "b"]}
+ok typecheck.isType T.Hash(String, Number), {"p1": 5, "p2": 3}
+
 
 # ContextType
 ok typecheck.isType T.any, 3
@@ -71,11 +73,6 @@ def Point, p, ->
 ok p.x is 3
 
 error -> def Point, p, -> @x = ""
-
-ok typecheck.isType [T.Hash(String, Number)], {
-  "a": "xxx"
-  "b": "yyy"
-}
 
 console.log "[success]", Date.now() - start
 

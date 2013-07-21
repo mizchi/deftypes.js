@@ -6,11 +6,11 @@
   isNumber
   isBoolean
   isFunction
-  isInstanceOf
+  isPrimitiveOf
+  isObject
 } = (if module? then require('./primitive') else Deftypes).primitive
 
-
-{isType}  = (if module? then require('./typecheck') else Deftypes)
+{typecheck}  = (if module? then require('./typecheck') else Deftypes)
 {Context} = (if module? then require('./context') else Deftypes).context
 
 class Any extends Context
@@ -24,7 +24,7 @@ class Nullable extends Context
     @type = type
 
   validate: (val) ->
-    val is null or isInstanceOf @type, val
+    val is null or isPrimitiveOf @type, val
 
 class Undefined extends Context
   constructor: ->
@@ -50,10 +50,11 @@ class Hash extends Context
     @key_type = key_type
     @value_type = value_type
 
-  validate: (val) ->
-    for key, val of val
-      if key instanceof key_type
-        if val instanceof val_type
+  validate: (hash) ->
+    unless isObject(hash) then return false
+
+    for key, val of hash
+      if typecheck.isType(@key_type, key) and typecheck.isType(@value_type, val)
           continue
       return false
     true
