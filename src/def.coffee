@@ -46,8 +46,11 @@ def = (type, val, mod_func = null) ->
 
   return val
 
+defun = (args, return_type, f) -> def T.Func(args, return_type), f
 
 if module?
-  module.exports = def
+  exports.def = def
+  exports.defun = defun
 else if window?
   Deftypes.def = def
+  Deftypes.defun = defun
