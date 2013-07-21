@@ -32,6 +32,7 @@ module.exports = (grunt) ->
           "lib/browser.js"
           "lib/option.js"
           "lib/primitive.js"
+          "lib/context.js"
           "lib/types.js"
           "lib/typecheck.js"
           "lib/def.js"

@@ -5,6 +5,7 @@
 
   root.Deftypes = function() {
     root.def = Deftypes.def;
+    root.defun = Deftypes.defun;
     return root.T = Deftypes.T;
   };
 
@@ -91,25 +92,30 @@
     }
   };
 
-  g.isUndefined = function(val) {
-    return val === void 0;
-  };
+}).call(this);
+
+(function() {
+  var g;
+
+  g = (typeof module !== "undefined" && module !== null ? exports : Deftypes).context = {};
+
+  g.Context = (function() {
+    function Context() {}
+
+    return Context;
+
+  })();
 
 }).call(this);
 
 (function() {
-  var Any, ContextType, Func, Hash, Null, Nullable, T, Undefined, isBoolean, isFunction, isInstanceOf, isNumber, isString, toString, _ref,
+  var Any, Context, Func, Hash, Null, Nullable, Types, Undefined, isBoolean, isFunction, isInstanceOf, isNumber, isString, toString, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   _ref = (typeof module !== "undefined" && module !== null ? require('./primitive') : Deftypes).primitive, toString = _ref.toString, isString = _ref.isString, isNumber = _ref.isNumber, isBoolean = _ref.isBoolean, isFunction = _ref.isFunction, isInstanceOf = _ref.isInstanceOf;
 
-  ContextType = (function() {
-    function ContextType() {}
-
-    return ContextType;
-
-  })();
+  Context = (typeof module !== "undefined" && module !== null ? require('./context') : Deftypes).context.Context;
 
   Any = (function(_super) {
     __extends(Any, _super);
@@ -126,7 +132,7 @@
 
     return Any;
 
-  })(ContextType);
+  })(Context);
 
   Nullable = (function(_super) {
     __extends(Nullable, _super);
@@ -148,7 +154,7 @@
 
     return Nullable;
 
-  })(ContextType);
+  })(Context);
 
   Undefined = (function(_super) {
     __extends(Undefined, _super);
@@ -169,7 +175,7 @@
 
     return Undefined;
 
-  })(ContextType);
+  })(Context);
 
   Null = (function(_super) {
     __extends(Null, _super);
@@ -190,7 +196,7 @@
 
     return Null;
 
-  })(ContextType);
+  })(Context);
 
   Func = (function(_super) {
     __extends(Func, _super);
@@ -213,7 +219,7 @@
 
     return Func;
 
-  })(ContextType);
+  })(Context);
 
   Hash = (function(_super) {
     __extends(Hash, _super);
@@ -246,10 +252,9 @@
 
     return Hash;
 
-  })(ContextType);
+  })(Context);
 
-  T = {
-    ContextType: ContextType,
+  Types = {
     Nullable: Nullable,
     nullable: Nullable(Any),
     Any: Any,
@@ -264,19 +269,23 @@
   };
 
   if (typeof module !== "undefined" && module !== null) {
-    module.exports = T;
+    exports.Types = Types;
+    exports.T = Types;
   } else if (typeof window !== "undefined" && window !== null) {
-    Deftypes.T = T;
+    Deftypes.Types = Types;
+    Deftypes.T = Types;
   }
 
 }).call(this);
 
 (function() {
-  var T, every, g, isArray, isInstanceOf, isObject, _ref;
+  var Context, Types, every, g, isArray, isInstanceOf, isObject, _ref;
 
   g = (typeof module !== "undefined" && module !== null ? exports : Deftypes).typecheck = {};
 
-  T = (typeof module !== "undefined" && module !== null ? require('./types') : Deftypes.T);
+  Types = (typeof module !== "undefined" && module !== null ? require('./types') : Deftypes).Types;
+
+  Context = (typeof module !== "undefined" && module !== null ? require('./context') : Deftypes).context.Context;
 
   _ref = (typeof module !== "undefined" && module !== null ? require('./primitive') : Deftypes).primitive, isArray = _ref.isArray, isObject = _ref.isObject, isInstanceOf = _ref.isInstanceOf;
 
@@ -298,7 +307,7 @@
       return every(val, function(item) {
         return g.isType(child_type, item);
       });
-    } else if (type instanceof T.ContextType) {
+    } else if (type instanceof Context) {
       return type.validate(val);
     }
     if (type === Object) {
@@ -325,11 +334,11 @@
 }).call(this);
 
 (function() {
-  var T, def, isFunction, option, typecheck, wrapFuncWithTypeCheck,
+  var T, def, defun, isFunction, option, typecheck, wrapFuncWithTypeCheck,
     __slice = [].slice;
 
   if (typeof module !== "undefined" && module !== null) {
-    T = require('./types');
+    T = require('./types').Types;
     typecheck = require('./typecheck').typecheck;
     option = require('./option').option;
   } else if (typeof window !== "undefined" && window !== null) {
@@ -387,33 +396,30 @@
     return val;
   };
 
+  defun = function(args, return_type, f) {
+    return def(T.Func(args, return_type), f);
+  };
+
   if (typeof module !== "undefined" && module !== null) {
-    module.exports = def;
+    exports.def = def;
+    exports.defun = defun;
   } else if (typeof window !== "undefined" && window !== null) {
     Deftypes.def = def;
+    Deftypes.defun = defun;
   }
 
 }).call(this);
 
 (function() {
-  var T, def;
-
   if (typeof module !== "undefined" && module !== null) {
-    T = require("./types");
-    def = require("./def");
     module.exports = {
       T: require("./types"),
-      def: require("./def"),
-      defun: function(args, return_type, f) {
-        return def(T.Func(args, return_type), f);
-      },
+      def: require("./def").def,
+      defun: require("./def").defun,
       option: require("./option").option
     };
   } else if (typeof window !== "undefined" && window !== null) {
-    T = Deftypes.T, def = Deftypes.def;
-    Deftypes.defun = function(args, return_type, f) {
-      return def(T.Func(args, return_type), f);
-    };
+    Deftypes.defun = Deftypes.defun;
   }
 
 }).call(this);

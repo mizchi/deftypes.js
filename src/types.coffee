@@ -6,8 +6,7 @@
   isFunction
   isInstanceOf
 } = (if module? then require('./primitive') else Deftypes).primitive
-
-{Context} = require('./context').context
+{Context} = (if module? then require('./context') else Deftypes).context
 
 class Any extends Context
   constructor: ->

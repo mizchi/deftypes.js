@@ -1,9 +1,12 @@
-{typecheck} = require '../src/typecheck'
-T = require('../src/types').Types
-{def, defun} = require '../src/def'
-{ok, ng, error} = require './spec_helper'
+if module?
+  {typecheck} = require '../src/typecheck'
+  T = require('../src/types').Types
+  {def, defun} = require '../src/def'
+  {ok, ng, error} = require './spec_helper'
+  {option} = require '../src/option'
+else
+  ""
 
-{option} = require '../src/option'
 option.transparent = false
 
 start = Date.now()
