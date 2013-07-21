@@ -28,10 +28,12 @@ g.def = (type, val, mod_func = null) ->
   # do nothing and return soon
   if option.transparent
     mod_func?.call val
+    if arguments.length is 2 and isFunction(val)
+      val = val()
     return val
 
   # wrap func and return
-  if isFunction val
+  if isFunction(val) and mod_func is null
     return wrap_func_with_typecheck type, val
 
   # apply mod_func to val after type check
@@ -39,6 +41,8 @@ g.def = (type, val, mod_func = null) ->
     unless typecheck.isType type, val
       throw new Error "invalid object before apply function"
     mod_func.call val
+  else if isFunction(val) and val.length is 0
+    val = val()
 
   # validate before return
   unless typecheck.isType type, val

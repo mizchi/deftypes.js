@@ -28,6 +28,11 @@ ng typecheck.isType T.Undefined, null
 ok typecheck.isType T.None, null
 ok typecheck.isType T.None, undefined
 
+ok typecheck.isType T.Int, 3
+ng typecheck.isType T.Int, 3.3
+ok typecheck.isType T.Float, 3.3
+
+ok typecheck.isType T.Float, 3.3
 
 
 # ContextType
@@ -40,12 +45,19 @@ ok typecheck.isType T.Nullable(Number), null
 ng typecheck.isType T.Nullable(Number), undefined
 ok typecheck.isType [T.Nullable(Number)], [null, 1, null]
 
+# Satisfied
+ok typecheck.isType T.Satisfied(Point), {x:1, y:2}
+ng typecheck.isType T.Satisfied(Point), {x:1, y:2, z:2}
+
 
 # def
 x1 = def Point, {x: 1, y:2}
 error -> x1e = def Point, {x: "", y:2}
 
 x2 = def [Point], [{x: 1, y:2}]
+
+x3 = def Point, -> {x: 1, y:2}
+
 
 ## Function
 f1 = def T.Func([Number, Number], String), (m, n) -> "#{m}, #{n}"
@@ -58,6 +70,7 @@ f2(1,2)
 
 f3 = def T.Func([Number, Number], String), (m, n) -> m * n
 error -> f3(1,2) # return type error
+
 
 get_distance = def T.Func([Point, Point], Number), (m, n) ->
   return Math.sqrt( Math.pow(m.x - n.x, 2) + Math.pow(m.y - n.y, 2))

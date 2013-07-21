@@ -17,6 +17,14 @@ class Any extends Context
   @__direct__: true
   @validate: (val) -> true
 
+class Int extends Context
+  @__direct__: true
+  @validate: (val) -> isNumber(val) and parseInt(val) is val
+
+class Float extends Context
+  @__direct__: true
+  @validate: (val) -> isNumber(val)
+
 class Undefined extends Context
   @__direct__: true
   @validate: (val) -> val is undefined
@@ -60,14 +68,31 @@ class Hash extends Context
       return false
     true
 
+class Satisfied extends Context
+  constructor: (type) ->
+    return new Satisfied(arguments...) unless @ instanceof Satisfied
+    @type = type
+
+  validate: (hash) ->
+    return false unless typecheck.isType(@type, hash)
+    for key, val of hash
+      unless @type[key]?
+        return false
+    true
+
+
+
 Types = {
   Any
+  Int
+  Float
   None
   Nullable
   Null
   Undefined
   Func
   Hash
+  Satisfied
 }
 
 if module?
