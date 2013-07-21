@@ -1,5 +1,5 @@
 if module?
-  T = require('./types')
+  T = require('./types').Types
   {typecheck} = require './typecheck'
   {option} = require './option'
 else if window?

@@ -1,5 +1,6 @@
 g = (if module? then exports else Deftypes).typecheck = {}
-T = (if module? then require('./types') else Deftypes.T)
+Types = (if module? then require('./types') else Deftypes).Types
+{Context} = (if module? then require('./context') else Deftypes).context
 
 {
   isArray
@@ -18,7 +19,7 @@ g.isType = (type, val) ->
     child_type = type[0]
     return every val, (item) ->
       g.isType child_type, item
-  else if type instanceof T.ContextType
+  else if type instanceof Context
     return type.validate(val)
 
   # dont check anymore

@@ -1,5 +1,5 @@
 {typecheck} = require '../src/typecheck'
-T = require '../src/types'
+T = require('../src/types').Types
 {def, defun} = require '../src/def'
 {ok, ng, error} = require './spec_helper'
 
