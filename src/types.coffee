@@ -55,6 +55,19 @@ class Func extends ContextType
 
   validate: (val) -> isFunction val and @args.length is val.length
 
+class Hash extends ContextType
+  constructor: (key_type, value_type) ->
+    return new Hash(arguments...) unless @ instanceof Hash
+    @key_type = key_type
+    @value_type = value_type
+
+  validate: (val) ->
+    for key, val of val
+      if key instanceof key_type
+        if val instanceof val_type
+          continue
+      return false
+    true
 
 T = {
   ContextType
@@ -68,6 +81,7 @@ T = {
   undefined: Undefined()
   Func
   func: Func [[Any()]], Any()
+  Hash
 }
 
 if module?

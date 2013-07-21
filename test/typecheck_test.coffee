@@ -83,7 +83,10 @@ ok p.x is 3
 
 error -> def Point, p, -> @x = ""
 
-
+ok typecheck.isType [T.Hash(String, Number)], {
+  "a": "xxx"
+  "b": "yyy"
+}
 
 console.log "[success]", Date.now() - start
 
