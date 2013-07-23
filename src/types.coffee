@@ -54,8 +54,10 @@ class Func extends Context
   validate: (val) -> isFunction val and @args.length is val.length
 
 class Hash extends Context
+  ALLOWED_KEY_TYPES = [Number, String, Int, Float]
   constructor: (key_type, value_type) ->
     return new Hash(arguments...) unless @ instanceof Hash
+    throw 'invalid key type' unless key_type in ALLOWED_KEY_TYPES
     @key_type = key_type
     @value_type = value_type
 
@@ -64,7 +66,7 @@ class Hash extends Context
 
     for key, val of hash
       if typecheck.isType(@key_type, key) and typecheck.isType(@value_type, val)
-          continue
+        continue
       return false
     true
 
