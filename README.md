@@ -2,12 +2,6 @@
 
 JavaScript type annotaion DSL library for structure and function.
 
-```
-<script src="https://raw.github.com/mizchi/deftypes.js/master/deftypes.js"></script>
-```
-
-or download deftypes.js
-
 
 ## Provide simple DSL and No side effects
 
@@ -16,34 +10,45 @@ It is type checker on execution(not static).
 Deftypes can avoid all side effects if you want. It may be also good on testing framework.
 
 
-## How to use
+## Install
 
 Examples are coffee-script.
 
-
-#### Node
-
-```
-npm install deftypes
-```
+### Node
 
 ```
+$ npm install deftypes
+```
+
+```coffee
 {def, defun, T} = require 'deftypes'
 ```
 
-#### Browser
+### Browser
 
 ```
-<script src="https://raw.github.com/mizchi/deftypes.js/master/deftypes.js"></script>
+$ bower install deftypes
 ```
 
-or download deftypes.js
+```
+<script src="bower_components/deftypes/deftypes.js"></script>
+```
+
+or download deftypes.js of this directory
+
+```
+<script src="master/deftypes.js"></script>
+```
+
 
 ```
 Deftypes()
 ```
 
-It provides DSLs.
+It provides DSLs => def, defun, T
+
+
+## How to use
 
 ### Struct Definition
 
@@ -53,6 +58,15 @@ p1 = def Point, {x:1, y:2} #=> {x: 1, y:2}
 p2 = def Point, {x:1, z:2} #=> type error
 ```
 
+### Typed Array
+
+```coffee
+list = def [T.Int], [1,2,3]
+```
+
+(T.Int and T.Fload are defined by default)
+
+
 ### Nullable
 
 ```coffee
@@ -61,20 +75,21 @@ p1 = def NullableNumber, n:1
 p2 = def NullableNumber, n:null
 ```
 
-### Any type
+### Typed Hash
 
 ```coffee
-events = def Object, require('events')
-list = def [T.any], [0, "", null]
+id_table = def T.Hash(String, Number), {
+  A:1
+  B:2
+  C:3
+}
 ```
 
-### Array
-
-```coffee
-number_list = def [Number], [1,2,3]
-```
+Key accepts only Number or String (but it doesn't check yet)
 
 ### Function Definition
+
+check arguments and returned object
 
 ```coffee
 f1 = def T.Func([Number, Number], String), (m, n) -> "#{m}, #{n}"
@@ -83,21 +98,24 @@ f1("",2) #=> argument error
 ```
 
 ```coffee
-find_n = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
-  ret = arr.indexOf(n)
-  if ret isnt -1
-    return ret
-  else
-    return null
+find_index = def T.Func([[Number], Number], T.Nullable(Number)), (arr, n) ->
+  if (index = arr.indexOf(n)) is -1 then null else index
 
-find_n([3,4,5], 4) #=> 1
-find_n([3,4,5], 9) #=> null
+find_index([3,4,5], 4) #=> 1
+find_index([3,4,5], 9) #=> null
 ```
 
 ### Function DSL
 
 ```coffee
 f2 = defun [Number, Number], String, (m, n) -> "#{m}, #{n}"
+```
+
+### Any Type
+
+```coffee
+events = def Object, require('events')
+list = def [T.any], [0, "", null]
 ```
 
 
@@ -127,8 +145,6 @@ Deftypes.option.transparent = true
 
 ## TODO
 
-- browser build
 - trait feature
 - struct inheritance
-- Float and Int
 - valid error message
