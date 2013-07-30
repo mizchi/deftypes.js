@@ -117,7 +117,8 @@
 (function() {
   var Any, Context, Float, Func, Hash, Int, None, Null, Nullable, Satisfied, Types, Undefined, isBoolean, isFunction, isNumber, isObject, isPrimitiveOf, isString, toString, typecheck, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   _ref = (typeof module !== "undefined" && module !== null ? require('./primitive') : Deftypes).primitive, toString = _ref.toString, isString = _ref.isString, isNumber = _ref.isNumber, isBoolean = _ref.isBoolean, isFunction = _ref.isFunction, isPrimitiveOf = _ref.isPrimitiveOf, isObject = _ref.isObject;
 
@@ -279,7 +280,11 @@
   })(Context);
 
   Hash = (function(_super) {
+    var ALLOWED_KEY_TYPES;
+
     __extends(Hash, _super);
+
+    ALLOWED_KEY_TYPES = [Number, String, Int, Float];
 
     function Hash(key_type, value_type) {
       if (!(this instanceof Hash)) {
@@ -288,6 +293,9 @@
           var child = new ctor, result = func.apply(child, args);
           return Object(result) === result ? result : child;
         })(Hash, arguments, function(){});
+      }
+      if (__indexOf.call(ALLOWED_KEY_TYPES, key_type) < 0) {
+        throw 'invalid key type';
       }
       this.key_type = key_type;
       this.value_type = value_type;
@@ -501,8 +509,8 @@
     module.exports = {
       T: require("./types"),
       Types: require("./types"),
-      def: require("./define").difine.def,
-      defun: require("./define").difine.defun,
+      def: require("./define").define.def,
+      defun: require("./define").define.defun,
       option: require("./option").option
     };
   }
