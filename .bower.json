@@ -1,0 +1,17 @@
+{
+  "name": "deftypes.js",
+  "main": "deftypes.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/mizchi/deftypes.js",
+  "authors": [
+    "Koutarou Chikuba <miz404@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
